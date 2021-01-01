@@ -18,7 +18,6 @@ function App() {
         <Switch>
           <Route exact path='/' component={Home} />
           <Route exact path='/about' component={About} />
-          <Route exact path='/contact' component={Contact} />
           <Route exact path='/posts/add' component={AddPost} />
           <Route exact path='/posts/edit/:id' component={EditPost} />
           <Route exact path='/posts/:id' component={ViewPost} />
