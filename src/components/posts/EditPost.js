@@ -20,7 +20,7 @@ const [post,setPost]= useState({
     },[]);
 
     const loadUser = async () =>{
-        var result= await axios.get(`https://nodejs-mysql-2020.herokuapp.com/${id}`);
+        var result= await axios.get(`https://nodejs-mysql-2020.herokuapp.com/posts/${id}`);
         // result =JSON.stringify(result.data);
  console.log(result.data[0]);
 //  console.log(JSON.stringify(result.data));
