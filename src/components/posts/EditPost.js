@@ -7,33 +7,24 @@ const EditPost =() => {
     let history = useHistory();
     const {id}= useParams();
 
-const [post,setPost]= useState({
-    title: "",
-     body:""
-});
+    const [post,setPost]= useState({
+        title: "",
+        body: ""
+    });
   
     const {title,body}= post;
    
     useEffect(()=>{
-        console.log('in edit post');
         loadUser();
     },[]);
 
     const loadUser = async () =>{
-        var result= await axios.get(`https://nodejs-mysql-2020.herokuapp.com/posts/${id}`);
-        // result =JSON.stringify(result.data);
- console.log(result.data[0]);
-//  console.log(JSON.stringify(result.data));
+        var result= await axios.get(`https://nodejs-mysql-2020.herokuapp.com/posts/${id}`);       
         setPost(result.data[0]);
-        
-        // console.log(post);
-        // console.log("title : "+post.title);
-        // console.log("body : "+post.body);
     };
 
     const onInputChange=e=>{
-        setPost({...post,[e.target.name]: e.target.value});
-        console.log(e.target.value);  
+        setPost({...post,[e.target.name]: e.target.value}); 
     };
 
     const onSubmit = async e =>{
@@ -51,11 +42,8 @@ const [post,setPost]= useState({
             <Link className="btn btn-warning float-right" to='/'>Back to Home</Link>
             <h2 className= 'text-info mb-3'> Edit Post: </h2>
                 <br>
-                </br>
-            
-                <form onSubmit={e=> onSubmit(e)}>
-              
-                   
+                </br>            
+                <form onSubmit={e=> onSubmit(e)}>                   
                     <div>
                         <label>Title : </label><br />
                         <input className="form-control" type ="text" name="title" value={title}
@@ -66,19 +54,12 @@ const [post,setPost]= useState({
                         <label>Body : </label><br />
                         <textarea className="form-control" name="body" value={body}
                         onChange={e => onInputChange(e)}/>
-                    </div>
-                                
+                    </div>                                
                     <br />
                     <button className="btn btn-primary" type = "submit"> Update </button>
-                </form>
-               
+                </form>       
         </div>
     );
 };
 
 export default EditPost;
-
-// {
-//     title: "",
-//  body: ""
-// }

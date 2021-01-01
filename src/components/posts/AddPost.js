@@ -14,7 +14,6 @@ const AddPost =() => {
 
     const onInputChange=e=>{
         setPost({...post,[e.target.name]: e.target.value});
-       console.log(e.target.value);
     };
 
     const onSubmit = async e =>{
@@ -23,34 +22,31 @@ const AddPost =() => {
             title:post.title,
             body : post.body
         });
-        console.log(post.title);
-        console.log(post.body);
-
         history.push("/")
     };
 
     return (
         <div className="container">
-        <br></br>
-        <Link className="btn btn-warning float-right" to='/'>Back to Home</Link>
-        <h2 className= 'text-info mb-3'> Add Post: </h2>
-        <br>
-        </br>
-        <form onSubmit={e=> onSubmit(e)}>
-        <div>
-            <label>Title : </label><br />
-            <input class="form-control" type ="text" name="title" value={title}
-            onChange={e =>onInputChange(e)}/>
-        </div>
-        <br></br>
-        <div>
-            <label>Body : </label><br />
-            <textarea class="form-control" name="body" value={body}
-            onChange={e => onInputChange(e)}/>
-        </div>
-        <br />
-        <button className="btn btn-primary" type = "submit"> Add </button>
-    </form>
+            <br></br>
+            <Link className="btn btn-warning float-right" to='/'>Back to Home</Link>
+            <h2 className= 'text-info mb-3'> Add Post: </h2>
+            <br>
+            </br>
+            <form onSubmit={e=> onSubmit(e)}>
+                <div>
+                    <label>Title : </label><br />
+                    <input class="form-control" type ="text" name="title" value={title}
+                    onChange={e =>onInputChange(e)}/>
+                </div>
+                <br></br>
+                <div>
+                    <label>Body : </label><br />
+                    <textarea class="form-control" name="body" value={body}
+                    onChange={e => onInputChange(e)}/>
+                </div>
+                <br />
+                <button className="btn btn-primary" type = "submit"> Add </button>
+            </form>
         </div>
     );
 };
