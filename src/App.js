@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import Home from './components/pages/Home';
-import Contact from './components/pages/Contact';
 import About from './components/pages/About';
 import AddPost from './components/posts/AddPost';
 import EditPost from './components/posts/EditPost';
