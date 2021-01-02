@@ -17,7 +17,7 @@ const Home =() => {
 
     const loadPosts= async()=>{
         const result = await axios.get("https://nodejs-mysql-2020.herokuapp.com/");
-        setPosts(result.data.reverse());
+        setAllPosts(result.data.reverse());
     };
 
     var posts= allPosts;
