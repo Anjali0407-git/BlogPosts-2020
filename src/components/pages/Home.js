@@ -5,7 +5,7 @@ import Pagination from './Pagination';
 
 
 const Home =() => {
-    const [posts, setPosts]= useState([]);
+    const [allPosts, setAllPosts]= useState([]);
     const [search, setSearch] = useState({})
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage]= useState(3);
@@ -20,6 +20,8 @@ const Home =() => {
         const result = await axios.get("https://nodejs-mysql-2020.herokuapp.com/");
         setPosts(result.data.reverse());
     };
+
+    var posts= allPosts;
 
     const deletePost= async id =>{
         alert("Are you sure to delete?");
