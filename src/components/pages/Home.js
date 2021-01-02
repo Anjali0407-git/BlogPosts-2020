@@ -30,20 +30,37 @@ const Home =() => {
     //----------------------get Current posts
     const indexOfLastPost= currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts= posts.slice(indexOfFirstPost, indexOfLastPost);
+    var currentPosts;
+    var searchPosts;
+    if(search == "")
+    currentPosts= posts.slice(indexOfFirstPost, indexOfLastPost);
+    else{
+     searchPosts = posts.filter(post => {
+        if(post.title.toLowerCase().indexOf(search.toLowerCase()) !== -1){
+            return post;
+        }
+    }).map(post =>{
+        return post;
+    })
+
+    posts= searchPosts;
+    console.log("posts");
+    console.log(posts);
+    currentPosts= posts.slice(indexOfFirstPost, indexOfLastPost);
+    }
 
     //----------------------change page
     const paginate= (pageNumber) => setCurrentPage(pageNumber); 
  
-    // const onChange = e =>{
-    //     setSearch(e.target.value);
-    //     console.log(search);
-    // }
     return (
         <div className="container">
             <div className="py-4">
-                {/* <input label="Search Posts" icon= "search" onChange={e => onChange(e)}></input> */}
-                <center><h1 className= 'text-info mb-20'> All Posts: </h1></center>
+            <div>
+                <h1 className= 'text-info mb-20'> All Posts: </h1>
+                <input className= "search float-right" label="Search Post" icon="search" placeholder= "Search Posts...." onChange= {e => {setSearch(e.target.value);setCurrentPage(1);}} ></input>
+                </div>
+                <br></br>
+                <br></br>
                 <br></br>
                 <table className="table table-success table-striped">
                     <thead>
