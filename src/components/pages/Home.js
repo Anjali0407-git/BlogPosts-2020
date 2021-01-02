@@ -6,10 +6,9 @@ import Pagination from './Pagination';
 
 const Home =() => {
     const [allPosts, setAllPosts]= useState([]);
-    const [search, setSearch] = useState({})
+    const [search, setSearch] = useState('')
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage]= useState(3);
-
 
     useEffect(()=>{
        loadPosts();
@@ -22,7 +21,6 @@ const Home =() => {
     };
 
     var posts= allPosts;
-
     const deletePost= async id =>{
         alert("Are you sure to delete?");
         await axios.delete(`https://nodejs-mysql-2020.herokuapp.com/posts/delete/${id}`);
@@ -34,7 +32,7 @@ const Home =() => {
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     var currentPosts;
     var searchPosts;
-    if(search == "")
+    if(search === "")
     currentPosts= posts.slice(indexOfFirstPost, indexOfLastPost);
     else{
      searchPosts = posts.filter(post => {
