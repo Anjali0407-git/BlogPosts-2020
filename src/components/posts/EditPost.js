@@ -1,38 +1,46 @@
-import axios from 'axios';
 import React,{useState, useEffect} from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 import { Link } from "react-router-dom";
+import {connect} from 'react-redux';
+import * as actions from '../../actions/PostsActions';
+import {bindActionCreators} from 'redux';
 
-const EditPost =() => {
+const EditPost =(props) => {
     let history = useHistory();
     const {id}= useParams();
 
-    const [post,setPost]= useState({
-        title: "",
-        body: ""
-    });
+const [post,setPost]= useState({
+    title: "",
+     body:""
+});
   
-    const {title,body}= post;
+    // const {title,body}= post;
    
     useEffect(()=>{
+        console.log('in edit post');
         loadUser();
     },[]);
 
-    const loadUser = async () =>{
-        var result= await axios.get(`https://nodejs-mysql-2020.herokuapp.com/posts/${id}`);       
-        setPost(result.data[0]);
+    async function loadUser(){
+       await props.ViewPost(id);
+        console.log(props.viewPost)    
     };
 
-    const onInputChange=e=>{
-        setPost({...post,[e.target.name]: e.target.value}); 
+    const onTitleChange=e=>{
+        props.viewPost.title= e.target.value;
+        setPost({...post,title : e.target.value }) 
+    };
+    const onBodyChange=e=>{
+        
+        props.viewPost.body= e.target.value;
+        setPost({...post,body : e.target.value })
+        console.log(e.target.value);  
     };
 
-    const onSubmit = async e =>{
+
+    const onSubmit = e =>{
         e.preventDefault();
-        await axios.put(`https://nodejs-mysql-2020.herokuapp.com/posts/update/${id}`, {
-            title:post.title,
-            body:post.body,
-        });
+        props.EditPost({id:id,title:props.viewPost.title, body:props.viewPost.body});
         history.push("/")
     };
 
@@ -41,25 +49,36 @@ const EditPost =() => {
             <br></br>
             <Link className="btn btn-warning float-right" to='/'>Back to Home</Link>
             <h2 className= 'text-info mb-3'> Edit Post: </h2>
-                <br>
-                </br>            
+                <br></br>
+            
                 <form onSubmit={e=> onSubmit(e)}>                   
                     <div>
                         <label>Title : </label><br />
-                        <input className="form-control" type ="text" name="title" value={title}
-                        onChange={e =>onInputChange(e)}/>
+                        <input className="form-control" type ="text" name="title" value ={props.viewPost.title} 
+                        onChange={e =>onTitleChange(e)}/>
                     </div>
                     <br></br>
                     <div>
                         <label>Body : </label><br />
-                        <textarea className="form-control" name="body" value={body}
-                        onChange={e => onInputChange(e)}/>
+                        <textarea className="form-control" name="body"  value= {props.viewPost.body}
+                        onChange={e => onBodyChange(e)}/>
                     </div>                                
                     <br />
                     <button className="btn btn-primary" type = "submit"> Update </button>
-                </form>       
+                </form>               
         </div>
     );
 };
 
-export default EditPost;
+const mapStateToProps = state => {
+    return {
+        viewPost: state.viewPost
+    }
+};
+const mapDispatchToProps = dispatch =>{
+    return bindActionCreators({
+        ViewPost : actions.view,
+        EditPost : actions.edit
+    },dispatch)
+};
+export default connect(mapStateToProps, mapDispatchToProps)(EditPost);

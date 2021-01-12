@@ -1,34 +1,45 @@
 import React,{useState, useEffect} from 'react';
-import axios from 'axios';
 import { useParams} from 'react-router-dom';
 import { Link } from "react-router-dom";
+import {connect} from 'react-redux';
+import * as actions from '../../actions/PostsActions';
+import {bindActionCreators} from 'redux';
 
-const Post= () =>{
+const Post= (props) =>{
     const {id}= useParams();
-    const [post,setPost]= useState({});
-
-    const loadUser = async () =>{
-        const result= await axios.get(`https://nodejs-mysql-2020.herokuapp.com/posts/${id}`);   
-        setPost(result.data[0]);
-    };
-
     useEffect(()=>{
         loadUser();
     },[]);
-
+    
+    async function loadUser(){
+        await props.ViewPost(id);
+        console.log("in load user");
+        console.log(props.viewPost);       
+    }
+    
     return (
         <div className="container">
             <br></br>
             <Link className="btn btn-warning float-right" to='/'>Back to Home</Link>
             <h2 className= 'text-info mb-3'> View Post: </h2>
             <br>
-            </br>           
+            </br>
             <ul className="list-group w-90">
-                <li className="list-group-item"><b>Title:</b> {post.title}</li>
-                <li className="list-group-item"><b>Body:</b> {post.body}</li>
-            </ul>          
+                <li className="list-group-item"><b>Title:</b> {props.viewPost.title}</li>
+                <li className="list-group-item"><b>Body:</b> {props.viewPost.body}</li>
+            </ul>
         </div>
     )
 };
 
-export default Post;
+const mapStateToProps = state => {
+    return {
+        viewPost: state.viewPost
+    }
+};
+const mapDispatchToProps = dispatch =>{
+    return bindActionCreators({
+        ViewPost : actions.view
+    },dispatch)
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Post);

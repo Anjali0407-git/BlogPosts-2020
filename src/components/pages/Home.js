@@ -1,29 +1,30 @@
-import React, {useState, useEffect} from 'react';
-import axios from "axios";
+import React, {useState, useEffect,useDidUpdate} from 'react';
 import {Link} from 'react-router-dom';
 import Pagination from './Pagination';
+import {connect} from 'react-redux';
+import * as actions from '../../actions/PostsActions';
+import {bindActionCreators} from 'redux';
 
 
-const Home =() => {
+const Home =(props) => {
     const [allPosts, setAllPosts]= useState([]);
-    const [search, setSearch] = useState('')
+    const [search,setSearch] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage]= useState(3);
 
-    useEffect(()=>{
+    useEffect(()=>{  
        loadPosts();
-    },[]
-    );
+    },[]);
 
-    const loadPosts= async()=>{
-        const result = await axios.get("https://nodejs-mysql-2020.herokuapp.com/");
-        setAllPosts(result.data.reverse());
+    async function loadPosts(){
+     await props.sendPosts();  
+     setAllPosts(props.dummyPosts)      
     };
 
-    var posts= allPosts;
-    const deletePost= async id =>{
+    var posts= allPosts
+    const deletePost= id =>{
         alert("Are you sure to delete?");
-        await axios.delete(`https://nodejs-mysql-2020.herokuapp.com/posts/delete/${id}`);
+        props.DeletePost(id);
         loadPosts();
     };
 
@@ -61,7 +62,6 @@ const Home =() => {
                 </div>
                 <br></br>
                 <br></br>
-                <br></br>
                 <table className="table table-success table-striped">
                     <thead>
                         <tr>
@@ -93,4 +93,16 @@ const Home =() => {
     );
 };
 
-export default Home;
+const mapStateToProps = state => {
+    return {
+        dummyPosts: state.dummyPosts
+    }
+};
+const mapDispatchToProps = dispatch =>{
+    return bindActionCreators({
+        sendPosts : actions.sendPosts,
+        DeletePost : actions.Delete
+    },dispatch)
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
